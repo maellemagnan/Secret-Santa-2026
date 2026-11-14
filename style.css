@@ -195,3 +195,5 @@ button.ghost:hover { background: rgba(31, 77, 58, .08); }
 @media (prefers-reduced-motion: reduce) {
   .bulb { animation: none; }
 }
+
+h1, .result .match { font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
