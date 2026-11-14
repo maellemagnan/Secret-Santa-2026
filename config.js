@@ -2,7 +2,7 @@
 
 window.SANTA_CONFIG = {
   // 1. Everyone taking part (spell each name the way people will type it).
-  NAMES: ["Maëlle", "Nolan", "Zahra", "Jack", "Ibrahim"],
+  NAMES: ["Alex", "Jordan", "Sam", "Taylor", "Morgan", "Casey", "Riley", "Jamie"],
 
   // 2. Any word or phrase. Same word = same matches every time.
   //    Change it to reshuffle everyone before you share the site.
@@ -10,5 +10,5 @@ window.SANTA_CONFIG = {
 
   // 3. Your collage photos. Put them next to index.html and list the
   //    file names here. Add as many as you like; they repeat to fill the screen.
-  PHOTOS: ["photo1.jpg", "photo2.jpg", "photo3.jpg", "photo4.jpg", "photo5.jpg", "photo6.jpg"],
+  PHOTOS: ["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg", "8.jpg"],
 };

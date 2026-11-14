@@ -128,7 +128,54 @@
     }
   }
 
+  /* ---------- Christmas lights ---------- */
+
+  const lights = document.createElement("div");
+  lights.className = "lights";
+  lights.setAttribute("aria-hidden", "true");
+  document.body.insertBefore(lights, document.querySelector(".stage"));
+
+  function buildLights() {
+    const w = window.innerWidth;
+    const small = w < 600;
+    const swags = Math.max(2, Math.round(w / (small ? 130 : 200)));
+    const sw = w / swags;               // width of one droop
+    const sag = small ? 30 : 42;        // how far the wire droops
+    const perSwag = small ? 3 : 4;      // bulbs per droop
+    const H = sag + 52;
+    const colors = ["#e0322f", "#23a35a"];
+
+    let wire = "M0 -2";
+    let bulbs = "";
+    let n = 0;
+    for (let i = 0; i < swags; i++) {
+      const x0 = i * sw;
+      wire += ` Q${(x0 + sw / 2).toFixed(1)} ${sag * 2} ${(x0 + sw).toFixed(1)} -2`;
+      for (let j = 0; j < perSwag; j++) {
+        const tt = (j + 0.5) / perSwag;
+        const x = x0 + tt * sw;
+        const y = 4 * sag * tt * (1 - tt) - 2;
+        const color = colors[n % 2];
+        const delay = n % 2 ? "-1.3s" : "0s";
+        bulbs +=
+          `<g class="bulb" style="color:${color};animation-delay:${delay}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)})">` +
+            `<rect x="-3" y="0" width="6" height="8" rx="1.5" fill="#2a2320"/>` +
+            `<path d="M-6 8 H6 C6 8 9 14 9 19 C9 25 5 28 0 28 C-5 28 -9 25 -9 19 C-9 14 -6 8 -6 8 Z" fill="currentColor"/>` +
+            `<ellipse cx="-3" cy="17" rx="1.6" ry="3.4" fill="#fff" opacity=".45"/>` +
+          `</g>`;
+        n++;
+      }
+    }
+
+    lights.innerHTML =
+      `<svg width="${w}" height="${H}" viewBox="0 0 ${w} ${H}" xmlns="http://www.w3.org/2000/svg">` +
+        `<path d="${wire}" fill="none" stroke="#2a2320" stroke-width="2.5" stroke-linecap="round"/>` +
+        bulbs +
+      `</svg>`;
+  }
+
   let t;
-  window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(buildCollage, 200); });
+  window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(() => { buildCollage(); buildLights(); }, 200); });
   buildCollage();
+  buildLights();
 })();
