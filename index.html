@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Secret Santa 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Young+Serif&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="collage" id="collage" aria-hidden="true"></div>
+  <div class="scrim" aria-hidden="true"></div>
+
+  <main class="stage">
+    <section class="card" aria-labelledby="title">
+      <span class="tape tape-left" aria-hidden="true"></span>
+      <span class="tape tape-right" aria-hidden="true"></span>
+
+      <h1 id="title">Secret Santa 2026</h1>
+
+      <form id="form" class="step" autocomplete="off" novalidate>
+        <label for="name">Input your name</label>
+        <input id="name" name="name" type="text" placeholder="Your first name" autocapitalize="words" spellcheck="false">
+        <p class="error" id="error" role="alert"></p>
+        <button type="submit">Reveal my person</button>
+      </form>
+
+      <div id="result" class="step result" hidden aria-live="polite">
+        <p class="lead">Hi <span id="giver"></span>, you’re buying for</p>
+        <p class="match" id="match"></p>
+        <p class="hush">Shh, keep it secret!</p>
+        <button type="button" id="again" class="ghost">Hide this and start over</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
