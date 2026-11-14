@@ -1,7 +1,8 @@
 SECRET SANTA 2026
 
 1. Open config.js and set NAMES (and optionally SEED and PHOTOS).
-2. Put your photos in the images folder.
+2. Photos are already included (photo1.jpg to photo6.jpg). To add more,
+   put them next to index.html and list them in config.js.
 3. Double-click index.html to test it.
 4. To share: upload this whole folder to a free host such as Netlify Drop
    (app.netlify.com/drop) or GitHub Pages, then send your friends the link.
