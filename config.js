@@ -2,7 +2,7 @@
 
 window.SANTA_CONFIG = {
   // 1. Everyone taking part (spell each name the way people will type it).
-  NAMES: ["Alex", "Jordan", "Sam", "Taylor", "Morgan", "Casey", "Riley", "Jamie"],
+  NAMES: ["Jack", "Maëlle", "Ibrahim", "Zahra", "Nolan"],
 
   // 2. Any word or phrase. Same word = same matches every time.
   //    Change it to reshuffle everyone before you share the site.
