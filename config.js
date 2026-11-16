@@ -6,7 +6,7 @@ window.SANTA_CONFIG = {
 
   // 2. Any word or phrase. Same word = same matches every time.
   //    Change it to reshuffle everyone before you share the site.
-  SEED: "north-pole-2026",
+  SEED: "new",
 
   // 3. Your collage photos. Put them next to index.html and list the
   //    file names here. Add as many as you like; they repeat to fill the screen.
