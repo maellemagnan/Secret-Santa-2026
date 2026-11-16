@@ -1,5 +1,5 @@
 (() => {
-  const { NAMES, SEED, PHOTOS } = window.SANTA_CONFIG;
+  const { NAMES, SEED, PHOTOS, AVOID } = window.SANTA_CONFIG;
 
   /* ---------- Matching (same result for everyone, every time) ---------- */
 
@@ -23,30 +23,45 @@
     };
   }
 
-  // Sattolo's algorithm builds one big circle, so nobody can draw themselves.
-  function buildCircle(names, seed) {
+  const clean = (s) => s.trim().replace(/\s+/g, " ").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const names = NAMES.map((n) => n.trim()).filter(Boolean);
+  const avoid = (AVOID || []).filter((p) => Array.isArray(p) && p.length === 2);
+
+  // Shuffle with the seeded generator until everyone is happy:
+  // nobody draws themselves, and nobody draws someone on their AVOID list.
+  function buildMatches(list, seed) {
     const rng = mulberry32(seedFrom(seed));
-    const circle = [...names].sort((a, b) => a.localeCompare(b));
-    for (let i = circle.length - 1; i > 0; i--) {
-      const j = Math.floor(rng() * i);
-      [circle[i], circle[j]] = [circle[j], circle[i]];
+    const givers = [...list].sort((a, b) => a.localeCompare(b));
+    const banned = new Set(
+      avoid.flatMap(([a, b]) => [clean(a) + "|" + clean(b), clean(b) + "|" + clean(a)])
+    );
+    for (let attempt = 0; attempt < 20000; attempt++) {
+      const receivers = [...givers];
+      for (let i = receivers.length - 1; i > 0; i--) {
+        const j = Math.floor(rng() * (i + 1));
+        [receivers[i], receivers[j]] = [receivers[j], receivers[i]];
+      }
+      const ok = givers.every((g, i) => {
+        const a = clean(g), b = clean(receivers[i]);
+        return a !== b && !banned.has(a + "|" + b);
+      });
+      if (ok) return new Map(givers.map((g, i) => [clean(g), { giver: g, receiver: receivers[i] }]));
     }
-    return circle;
+    return null;
   }
 
-  const clean = (s) => s.trim().replace(/\s+/g, " ").toLowerCase();
-  const names = NAMES.map((n) => n.trim()).filter(Boolean);
-  const uniqueCount = new Set(names.map(clean)).size;
-  const configProblem =
+  const known = new Set(names.map(clean));
+  const unknownAvoid = avoid.flat().find((n) => !known.has(clean(n)));
+  let configProblem =
     names.length < 2 ? "Add at least two names in config.js." :
-    uniqueCount !== names.length ? "Two names in config.js are the same. Make each one different." : "";
+    known.size !== names.length ? "Two names in config.js are the same. Make each one different." :
+    unknownAvoid ? "“" + unknownAvoid + "” is in AVOID but not in NAMES. Check the spelling in config.js." : "";
 
-  const circle = configProblem ? [] : buildCircle(names, SEED);
+  const matches = configProblem ? null : buildMatches(names, SEED);
+  if (!configProblem && !matches) configProblem = "No valid matches with these AVOID rules. Remove one and try again.";
 
   function lookup(typed) {
-    const k = circle.findIndex((n) => clean(n) === clean(typed));
-    if (k === -1) return null;
-    return { giver: circle[k], receiver: circle[(k + 1) % circle.length] };
+    return (matches && matches.get(clean(typed))) || null;
   }
 
   /* ---------- Page ---------- */
